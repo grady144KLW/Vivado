@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 
-entity Traffic_Lights is generic (seconds: integer := 100000000);
+entity Traffic_Lights is generic (seconds: integer := 100000000); -- converting from nanoseconds to seconds
     Port ( reset : in STD_LOGIC;
            clk : in STD_LOGIC;
            red_NS: out std_logic; -- red light for north/south direction
@@ -19,7 +19,7 @@ architecture Behavioral of Traffic_Lights is
     type t_state is (init_NS, Start_NS, NS, Stop_NS, init_WE, Start_WE, WE, Stop_WE); -- declaring the states of the traffic lights
     
     signal state : t_state; -- "state" can be any of the states mentioned above 
-    signal counter: integer range 0 to seconds * 60;
+    signal counter: integer range 0 to seconds * 60; -- declaring a delay variable 
 begin
 
     process(clk) is
@@ -51,25 +51,25 @@ begin
                         red_NS <= '1'; -- assigning the traffic lights on north/south direction to red 
                         red_WE <= '1'; -- assigning the traffic lights on west/east direction to red 
                         if (counter = seconds * 5-1) then -- if counter reaches 5 seconds
-                        counter <= 0;
-                        state <= Start_NS;
+                        counter <= 0; -- reset the delay to 0
+                        state <= Start_NS; -- move to the next state
                         end if;
                         
                     when Start_NS => -- north/south lights will be red and yellow while west/east will be red 
                         red_NS <= '1';
                         yellow_NS <= '1';
                         red_WE <= '1';
-                        if (counter = seconds * 5 - 1) then 
-                        counter <= 0;
+                        if (counter = seconds * 5 - 1) then -- if counter reaches 5 seconds
+                        counter <= 0; 
                         state <= NS;    
                         end if;
                         
                     when NS => -- north/south lights will be green while west/east will be red 
                         green_NS <= '1';
                         red_WE <= '1';
-                        if (counter = seconds * 60 - 1) then -- if 1 minute has passed 
-                        counter <= 0;
-                        state <= Stop_NS;
+                        if (counter = seconds * 60 - 1) then -- if 20 seconds has passed 
+                        counter <= 0; -- reset the delay to 0
+                        state <= Stop_NS; -- move to the next state
                         end if;
                         
                     when Stop_NS => -- north/south lights will be yellow while west/east will be red 
