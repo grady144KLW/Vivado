@@ -7,7 +7,7 @@ end tb_Traffic_Lights;
 
 architecture tb of tb_Traffic_Lights is
 
-constant clk_period: time := 10 ns; -- set the clock period to 1000 ms
+constant clk_period: time := 10 ns; -- set the clock period to 10 ns
 
     component Traffic_Lights is generic (seconds: integer);
         port (reset     : in std_logic;
@@ -32,7 +32,7 @@ constant clk_period: time := 10 ns; -- set the clock period to 1000 ms
 begin
 
     uut : Traffic_Lights
-    generic map (seconds => 100000000)
+    generic map (seconds => 100000000) -- converting nanoseconds to seconds
     port map (reset     => reset,
               clk       => clk,
               red_NS    => red_NS,
